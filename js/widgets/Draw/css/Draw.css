@@ -1,0 +1,18 @@
+.widgetDraw {
+    margin: 5px;
+    padding: 5px;
+}
+
+.drawMessage {
+    text-align: center;
+    font-size: 8pt;
+    font-style: italic;
+}
+
+.drawTools {
+    text-align: center;
+}
+
+.drawButtons {
+    text-align: center;
+}

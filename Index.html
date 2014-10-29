@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Mapping Application</title>
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.11/dojo/resources/dojo.css">
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.11/esri/css/esri.css">
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.11/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body class="dbootstrap">
+    <div id="HomeButton"></div>
+
+    <script type="text/javascript">
+        var path_location = location.pathname.replace(/[^\/]+$/, '');
+        var dojoConfig = {
+            async: true,
+            packages: [{
+                name: "app",
+                location: path_location + "js/app"
+            },{
+                name: "widgets",
+                location: path_location + "js/widgets"
+            },{
+                name: "dbootstrap",
+                location: path_location + "js/dbootstrap"
+            }]
+        }
+    </script>
+    <script src="//js.arcgis.com/3.11"></script>
+    <script type="text/javascript">
+        var app;
+        require(['dbootstrap', 'app/Controller', 'app/Config'], function(dbootstrap, Controller, config){
+            app = Controller;
+            app.startup(config);
+        });
+    </script>
+</body>
+</html>
