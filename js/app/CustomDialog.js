@@ -9,7 +9,6 @@ define([
 ], function(declare, aspect, domStyle, Dialog){
     return declare(Dialog, {
         title: null,
-        content: null,
         class: null,
         width: null,
         height: null,
@@ -18,7 +17,6 @@ define([
         constructor: function(options) {
             //set up the dialog based on the options provided or use defaults
             this.title = options.title || "default title";
-            this.content = options.content || "no content provided";
             this.class = options.class || "modalDialog"; //in the css .modalDialog_underlay {display: block;}
             this.width = options.width || 300;
             this.height = options.height || 300;

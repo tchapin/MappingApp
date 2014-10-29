@@ -43,12 +43,10 @@ define([
                     new Color([255,0,0,1.0]), 2),
                 new Color([255,0,0,0.25])
             );
-            on(this.dlgDraw, "hide", lang.hitch(this, function() {
-                console.log("hiding draw dialog");
+            //listen to the parent dialog's onHide and cancel drawing
+            on(this.parentDialog, "hide", lang.hitch(this, function() {
+                this.drawCancel();
             }));
-
-
-
         },
         drawPoint: function() {
             this.drawToolbar.activate(Draw.POINT);

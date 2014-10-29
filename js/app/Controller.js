@@ -319,15 +319,9 @@ define([
         initDialogs: function() {
             //Basemaps
             require(["esri/dijit/BasemapGallery"], lang.hitch(this, function(BasemapGallery) {
-                var bmGallery = new BasemapGallery({
-                    map: this.map,
-                    showArcGISBasemaps: true
-                }, "bmGalleryDiv");
-                bmGallery.startup();
                 //create the basemaps dialog
                 this.dlgBasemaps = new CustomDialog({
                     title: "Basemaps",
-                    content: bmGallery,
                     class: "nonModalDialog",
                     width: 400,
                     height: 410,
@@ -337,19 +331,20 @@ define([
                 this.dlgBasemaps.startup();
                 //hook it to the button click
                 on(this.btnBasemaps, "click", lang.hitch(this, function(){this.dlgBasemaps.show();}));
+                //create the basemap gallery
+                var bmGallery = new BasemapGallery({
+                    map: this.map,
+                    showArcGISBasemaps: true
+                }, "bmGalleryDiv");
+                bmGallery.placeAt(this.dlgBasemaps.containerNode);
+                bmGallery.startup();
             }));
 
             //Draw
             require(["widgets/Draw"], lang.hitch(this, function(Draw) {
-                //create the custom draw widget
-                this.widgetDraw = new Draw({
-                    map: this.map
-                }, "drawDiv");
-                this.widgetDraw.startup();
                 //create the draw dialog
                 this.dlgDraw = new CustomDialog({
                     title: "Draw",
-                    content: this.widgetDraw,
                     class: "nonModalDialog",
                     width: 300,
                     height: 150,
@@ -357,20 +352,16 @@ define([
                     top: 130
                 });
                 this.dlgDraw.startup();
-
-
-/*
-                on(this.dlgDraw, "hide", lang.hitch(this, function() {
-                    console.log("debug 1");
-                    this.dlgDraw.testMethod();
-                    console.log("debug 2");
-                }));
-*/
-
-
-
                 //hook it to the button click
                 on(this.btnDraw, "click", lang.hitch(this, function(){this.dlgDraw.show();}));
+                //create the custom draw widget
+                var widgetDraw = new Draw({
+                    map: this.map,
+                    parentDialog: this.dlgDraw
+                }, "drawDiv");
+                //put it in the dialog
+                widgetDraw.placeAt(this.dlgDraw.containerNode);
+                widgetDraw.startup();
             }));
 
 
