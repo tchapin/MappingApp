@@ -7,6 +7,7 @@ define([
     "dijit/_WidgetsInTemplateMixin",
     "dojo/_base/Color",
     "dojo/_base/declare",
+    "dojo/_base/event",
     "dojo/_base/lang",
     "dojo/on",
     "dojo/text!./Draw/templates/Draw.html",
@@ -15,8 +16,9 @@ define([
     "esri/symbols/SimpleLineSymbol",
     "esri/symbols/SimpleFillSymbol",
     "esri/toolbars/draw",
+    "esri/toolbars/edit",
     "xstyle/css!./Draw/css/Draw.css"
-], function(_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Color, declare, lang, on, drawTemplate, Graphic, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, css){
+], function(_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Color, declare, event, lang, on, drawTemplate, Graphic, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, Edit, css){
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         widgetsInTemplate: true,
         templateString: drawTemplate,
@@ -25,6 +27,7 @@ define([
             this.inherited(arguments);
             this.drawToolbar = new Draw(this.map);
             this.drawToolbar.on("draw-end", lang.hitch(this, "onDrawToolbarDrawEnd"));
+            this.editToolbar = new Edit(this.map);
             this.markerSymbol = new SimpleMarkerSymbol(
                 SimpleMarkerSymbol.STYLE_CIRCLE,
                 10,
@@ -57,12 +60,27 @@ define([
         drawPolygon: function() {
             this.drawToolbar.activate(Draw.POLYGON);
         },
+        drawEdit: function() {
+            //add one-time click event to the graphics layer
+            on.once(this.map.graphics, "click", lang.hitch(this, function(evt) {
+                //stop the click event to avoid propagation (IE)
+                event.stop(evt);
+                this.editToolbar.activate(Edit.MOVE | Edit.EDIT_VERTICES, evt.graphic);
+            }));
+            //add one-time click event to map to deactivate the edit toolbar if they click off a graphic
+            on.once(this.map, "click", lang.hitch(this, function(evt) {
+                //deactivate the edit toolbar
+                this.editToolbar.deactivate();
+            }));
+        },
         drawCancel: function() {
             this.drawToolbar.deactivate();
+            this.editToolbar.deactivate();
         },
         drawClear: function() {
-            this.map.graphics.clear();
             this.drawToolbar.deactivate();
+            this.editToolbar.deactivate();
+            this.map.graphics.clear();
         },
         onDrawToolbarDrawEnd: function(evt) {
             this.drawToolbar.deactivate();
