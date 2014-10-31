@@ -22,7 +22,6 @@ define([
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         widgetsInTemplate: true,
         templateString: drawTemplate,
-        drawToolbar: null,
         postCreate: function() {
             this.inherited(arguments);
             this.drawToolbar = new Draw(this.map);

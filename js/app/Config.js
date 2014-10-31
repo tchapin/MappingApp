@@ -2,9 +2,14 @@
  * Created by tchapin on 5/27/2014.
  */
 define([
-        'esri/layers/FeatureLayer'
+        "esri/config",
+        "esri/layers/FeatureLayer",
+        "esri/tasks/GeometryService"
     ],
-    function(FeatureLayer) {
+    function(esriConfig, FeatureLayer, GeometryService) {
+        //geometry service
+        esriConfig.defaults.geometryService = new GeometryService("https://webgis.sgcengineering.com/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+
         return {
             title: 'Mapping Application',
             subTitle: 'a custom mapping application',
@@ -60,7 +65,7 @@ define([
             extentType: 'layer',
             extentParams: {layerID: 'demoLocations'},
 
-            // operationalLayers: Array of Layers to load on top of the basemap: valid 'type' options: "dynamic", "tiled", "feature".
+            // operationalLayers: list of layers to load on top of the basemap: valid 'type' options: "dynamic", "tiled", "feature".
             //      title: used when the layer is displayed, e.g. toc
             //      type: dynamic | tiled | feature
             //      url: start with //
@@ -78,15 +83,15 @@ define([
                         visible: true
                     }
                 }
-//                {
-//                    title: 'demoLocations',
-//                    type: 'dynamic',
-//                    url: '//webgis.sgcengineering.com/arcgis/rest/services/TChapin/demoLocations/MapServer',
-//                    options: {
-//                        id: 'demoLocations',
-//                        visible: true
-//                    }
-//                }
+                //{
+                //    title: 'demoLocations',
+                //    type: 'dynamic',
+                //    url: '//webgis.sgcengineering.com/arcgis/rest/services/TChapin/demoLocations/MapServer',
+                //    options: {
+                //        id: 'demoLocations',
+                //        visible: true
+                //    }
+                //}
             ],
 
             scaleBar: {
@@ -96,7 +101,24 @@ define([
                 scalebarUnit: "dual"
             },
             homeButton: {include: true},
-            locateButton: {include: true}
+            locateButton: {include: true},
+            bookmarkConfig: {
+                editable: true,
+                bookmarks: [
+                    {
+                        "name" : "Aziscohos Lake",
+                        "extent" : {"xmin":-7918436.617429456,"ymin":5610658.48613199,"xmax":-7889161.235596273,"ymax":5627474.6323547065,"spatialReference":{"wkid":102100}}
+                    },
+                    {
+                        "name" : "Parmachenee Lake",
+                        "extent" : {"xmin":-7909311.947177925,"ymin":5641300.17984577,"xmax":-7894674.256261333,"ymax":5649708.252957127,"spatialReference":{"wkid":102100}}
+                    },
+                    {
+                        "name" : "Kennebago Lake",
+                        "extent" : {"xmin":-7879711.707974532,"ymin":5631879.316109634,"xmax":-7865074.017057939,"ymax":5640287.389220991,"spatialReference":{"wkid":102100}}
+                    }
+                ]
+            }
         }
     }
 );

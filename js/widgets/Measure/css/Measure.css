@@ -1,0 +1,16 @@
+.widgetMeasure {
+    margin: 5px;
+    padding: 5px;
+}
+
+.measureMessage {
+    text-align: center;
+    font-size: 8pt;
+    font-style: italic;
+}
+
+.measureTools {
+    margin: 5px;
+    padding: 5px;
+}
+

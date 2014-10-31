@@ -1,0 +1,15 @@
+.widgetBookmarks {
+    margin: 5px;
+    padding: 5px;
+}
+
+.bookmarksMessage {
+    text-align: center;
+    font-size: 8pt;
+    font-style: italic;
+}
+
+.bookmarksTools{
+    margin: 5px;
+    padding: 5px;
+}

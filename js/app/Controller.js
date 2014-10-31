@@ -11,6 +11,7 @@ define([
     "esri/layers/FeatureLayer",
     "esri/tasks/GeometryService",
     "esri/tasks/ProjectParameters",
+    "esri/units",
     "dijit/layout/BorderContainer",
     "dijit/layout/ContentPane",
     "dijit/form/Button",
@@ -20,7 +21,7 @@ define([
     "dojo/dom-construct",
     "dojo/on",
     "app/CustomDialog"
-], function(config, Map, Extent, Point, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, GeometryService, ProjectParameters, BorderContainer, ContentPane, Button, array, win, lang, domConstruct, on, CustomDialog) {
+], function(config, Map, Extent, Point, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, GeometryService, ProjectParameters, units, BorderContainer, ContentPane, Button, array, win, lang, domConstruct, on, CustomDialog) {
     var controller = {
         startup: function(config) {
             this.config = config;
@@ -332,12 +333,12 @@ define([
                 //hook it to the button click
                 on(this.btnBasemaps, "click", lang.hitch(this, function(){this.dlgBasemaps.show();}));
                 //create the basemap gallery
-                var bmGallery = new BasemapGallery({
+                var widgetBMGallery = new BasemapGallery({
                     map: this.map,
                     showArcGISBasemaps: true
                 }, "bmGalleryDiv");
-                bmGallery.placeAt(this.dlgBasemaps.containerNode);
-                bmGallery.startup();
+                widgetBMGallery.placeAt(this.dlgBasemaps.containerNode);
+                widgetBMGallery.startup();
             }));
 
             //Draw
@@ -364,7 +365,56 @@ define([
                 widgetDraw.startup();
             }));
 
+            //Measure
+            require(["widgets/Measure"], lang.hitch(this, function(Measure) {
+                //create a new measure dialog
+                this.dlgMeasure = new CustomDialog({
+                    title: "Measure",
+                    class: "nonModalDialog",
+                    width: 300,
+                    height: 300,
+                    left: 65,
+                    top: 130
+                });
+                this.dlgMeasure.startup();
+                //hook it to the button click
+                on(this.btnMeasure, "click", lang.hitch(this, function(){this.dlgMeasure.show();}));
+                //create the measure widget
+                var widgetMeasure = new Measure({
+                    map: this.map,
+                    parentDialog: this.dlgMeasure,
+                    defaultAreaUnit: units.ACRES,
+                    defaultLengthUnit: units.FEET
+                }, "measureDiv");
+                //put it in the dialog
+                widgetMeasure.placeAt(this.dlgMeasure.containerNode);
+                widgetMeasure.startup();
+            }));
 
+            //Bookmarks
+            require(["widgets/Bookmarks"], lang.hitch(this, function(Bookmarks) {
+                //create a new bookmarks dialog
+                this.dlgBookmarks = new CustomDialog({
+                    title: "Bookmarks",
+                    class: "nonModalDialog",
+                    width: 350,
+                    height: 300,
+                    left: 65,
+                    top: 130
+                });
+                this.dlgBookmarks.startup();
+                //hook it to the button click
+                on(this.btnBookmarks, "click", lang.hitch(this, function(){this.dlgBookmarks.show();}));
+                //create the bookmarks widget
+                var widgetBookmarks = new Bookmarks({
+                    map: this.map,
+                    parentDialog: this.dlgBookmarks,
+                    config: this.config.bookmarkConfig
+                }, "bookmarksDiv");
+                //put it in the dialog
+                widgetBookmarks.placeAt(this.dlgBookmarks.containerNode);
+                widgetBookmarks.startup();
+            }));
         }
     };
 
