@@ -104,7 +104,7 @@ define([
             locateButton: {include: true},
             bookmarkConfig: {
                 editable: true,
-                bookmarks: [
+                bookmarkItems: [
                     {
                         "name" : "Aziscohos Lake",
                         "extent" : {"xmin":-7918436.617429456,"ymin":5610658.48613199,"xmax":-7889161.235596273,"ymax":5627474.6323547065,"spatialReference":{"wkid":102100}}

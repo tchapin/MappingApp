@@ -9,7 +9,11 @@
     font-style: italic;
 }
 
-.bookmarksTools{
+.bookmarksTools {
     margin: 5px;
     padding: 5px;
+}
+
+.bookmarkButtons {
+    text-align: left;
 }
