@@ -1,0 +1,62 @@
+.printWidget {
+    width: 100%;
+}
+
+.printWidget .printResult {
+    height: 28px;
+    margin-bottom: 3px;
+    width: 100%;
+}
+
+.printWidget .printResult .printResultTable {
+    width: 100%;
+}
+
+.printWidget .printResult .bold {
+    font-weight: bold;
+}
+
+.printWidget .printResultError {
+    font-weight: bold;
+    color: red;
+}
+
+.printWidget .printResultHover table:hover {
+    background-color: #D4E7F8;
+    cursor: pointer;
+}
+
+.printWidget .buttonActionBar {
+    padding: 3px 0px 2px 0px;
+    text-align: right;
+    width: 100%;
+}
+
+.printWidget .formContainer {
+    margin-bottom: -1px;
+    width: 100%;
+}
+
+.printWidget .resultsContainer {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.printWidget .printIcon {
+    background-image: url(../images/print.png);
+    width: 16px;
+    height: 16px;
+}
+
+.printWidget .clearIcon {
+    background-image: url(../images/clear.png);
+    width: 16px;
+    height: 16px;
+}
+
+.printWidget .settingsIcon {
+    background-image: url(../images/settings.png);
+    width: 16px;
+    height: 16px;
+}

@@ -6,6 +6,7 @@ define([
     "esri/map",
     "esri/geometry/Extent",
     "esri/geometry/Point",
+    "esri/IdentityManager",
     "esri/layers/ArcGISDynamicMapServiceLayer",
     "esri/layers/ArcGISTiledMapServiceLayer",
     "esri/layers/FeatureLayer",
@@ -21,7 +22,7 @@ define([
     "dojo/dom-construct",
     "dojo/on",
     "app/CustomDialog"
-], function(config, Map, Extent, Point, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, GeometryService, ProjectParameters, units, BorderContainer, ContentPane, Button, array, win, lang, domConstruct, on, CustomDialog) {
+], function(config, Map, Extent, Point, IdentityManager, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, GeometryService, ProjectParameters, units, BorderContainer, ContentPane, Button, array, win, lang, domConstruct, on, CustomDialog) {
     var controller = {
         startup: function(config) {
             this.config = config;
@@ -340,7 +341,6 @@ define([
                 widgetBMGallery.placeAt(this.dlgBasemaps.containerNode);
                 widgetBMGallery.startup();
             }));
-
             //Draw
             require(["widgets/Draw"], lang.hitch(this, function(Draw) {
                 //create the draw dialog
@@ -364,7 +364,6 @@ define([
                 widgetDraw.placeAt(this.dlgDraw.containerNode);
                 widgetDraw.startup();
             }));
-
             //Measure
             require(["widgets/Measure"], lang.hitch(this, function(Measure) {
                 //create a new measure dialog
@@ -390,7 +389,6 @@ define([
                 widgetMeasure.placeAt(this.dlgMeasure.containerNode);
                 widgetMeasure.startup();
             }));
-
             //Bookmarks
             require(["widgets/Bookmarks"], lang.hitch(this, function(Bookmarks) {
                 //create a new bookmarks dialog
@@ -414,6 +412,31 @@ define([
                 //put it in the dialog
                 widgetBookmarks.placeAt(this.dlgBookmarks.containerNode);
                 widgetBookmarks.startup();
+            }));
+            //Print
+            require(["widgets/Print"], lang.hitch(this, function(Print) {
+                //create a new bookmarks dialog
+                this.dlgPrint = new CustomDialog({
+                    title: "Print",
+                    class: "nonModalDialog",
+                    width: 500,
+                    height: 400,
+                    left: 65,
+                    top: 130
+                });
+                this.dlgPrint.startup();
+                //hook it to the button click
+                on(this.btnPrint, "click", lang.hitch(this, function(){this.dlgPrint.show();}));
+                //create the print widget
+                var widgetPrint = new Print({
+                    map: this.map,
+                    parentDialog: this.dlgPrint,
+                    printTaskURL: this.config.printConfig.printTaskUrl,
+                    defaultTitle: this.config.printConfig.defaultTitle
+                }, "printDiv");
+                //put it in the dialog
+                widgetPrint.placeAt(this.dlgPrint.containerNode);
+                widgetPrint.startup();
             }));
         }
     };

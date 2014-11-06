@@ -62,7 +62,8 @@ define([
             var confirmDialog = new ConfirmDialog({
                 title: "Are you sure?",
                 content: "All current bookmarks will be permanently removed and replaced with the default bookmarks.",
-                style: "margin: 5px; padding: 5px; width: 350px;"
+                style: "margin: 5px; padding: 5px; width: 350px;",
+                class: "alert-danger danger"
             });
             on(confirmDialog, "execute", lang.hitch(this, function() {
                 this._resetBookmarks();

@@ -9,15 +9,16 @@ define([
     function(esriConfig, FeatureLayer, GeometryService) {
         //geometry service
         esriConfig.defaults.geometryService = new GeometryService("https://webgis.sgcengineering.com/arcgis/rest/services/Utilities/Geometry/GeometryServer");
-
+        //proxy
+        esriConfig.defaults.io.proxyUrl = "/proxy/proxy.ashx";
+        esriConfig.defaults.io.alwaysUseProxy = false;
+        //configuration parameters
         return {
-            title: 'Mapping Application',
-            subTitle: 'a custom mapping application',
-
-            //MAP OPTIONS
+            title: "Mapping Application",
+            subTitle: "a custom mapping application",
             mapOptions: {
                 //initial basemap choices: streets , satellite , hybrid, topo, gray, oceans, national-geographic, osm
-                basemap: 'gray',
+                basemap: "gray",
                 //levels of detail can be provided to allow users to zoom in farther or prevent zooming out too far.
                 //                lods: [
                 //                    {level: 0, resolution: 156543.03392800014, scale: 5.91657527591555E8},
@@ -50,10 +51,9 @@ define([
                 //min zoom.  You cannot zoom out past this level
                 //minZoom: 10,
                 slider: true,
-                sliderPosition: 'top-left',
-                sliderStyle: 'small'
+                sliderPosition: "top-left",
+                sliderStyle: "small"
             },
-
             //initial extent can be a fixed extent ('extent'), centered on a coordinate ('center'), or the initial extent of a layer ('layer')
             //extent example (extent json) (helper app: http://psstl.esri.com/apps/extenthelper/)
             //extentType: 'extent',
@@ -62,9 +62,8 @@ define([
             //extentType: 'center',
             //extentParams: {point: {x: -7846286.930117544, y: 5427867.096123681, spatialReference: {wkid: 102100 } }, zoom: 16},
             //layer example
-            extentType: 'layer',
+            extentType: "layer",
             extentParams: {layerID: 'demoLocations'},
-
             // operationalLayers: list of layers to load on top of the basemap: valid 'type' options: "dynamic", "tiled", "feature".
             //      title: used when the layer is displayed, e.g. toc
             //      type: dynamic | tiled | feature
@@ -72,28 +71,27 @@ define([
             //      options: layer options that get passed to the constructor
             // draw order is top to bottom
             operationalLayers: [
-                {
-                    title: 'demoLocations',
-                    type: 'feature',
-                    url: '//webgis.sgcengineering.com/arcgis/rest/services/TChapin/demoLocations/MapServer/0',
-                    options: {
-                        id: 'demoLocations',
-                        mode: FeatureLayer.MODE_ONDEMAND,
-                        opacity: 1.0,
-                        visible: true
-                    }
-                }
                 //{
                 //    title: 'demoLocations',
-                //    type: 'dynamic',
-                //    url: '//webgis.sgcengineering.com/arcgis/rest/services/TChapin/demoLocations/MapServer',
+                //    type: 'feature',
+                //    url: '//webgis.sgcengineering.com/arcgis/rest/services/TChapin/demoLocations/MapServer/0',
                 //    options: {
                 //        id: 'demoLocations',
+                //        mode: FeatureLayer.MODE_ONDEMAND,
+                //        opacity: 1.0,
                 //        visible: true
                 //    }
                 //}
+                {
+                    title: "demoLocations",
+                    type: "dynamic",
+                    url: "http://webgis.sgcengineering.com/arcgis/rest/services/TChapin/demoLocations/MapServer",
+                    options: {
+                        id: 'demoLocations',
+                        visible: true
+                    }
+                }
             ],
-
             scaleBar: {
                 include: true,
                 attachTo: "bottom-left",
@@ -118,6 +116,10 @@ define([
                         "extent" : {"xmin":-7879711.707974532,"ymin":5631879.316109634,"xmax":-7865074.017057939,"ymax":5640287.389220991,"spatialReference":{"wkid":102100}}
                     }
                 ]
+            },
+            printConfig: {
+                printTaskUrl: "https://webgis.sgcengineering.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
+                defaultTitle: "Web Map"
             }
         }
     }
