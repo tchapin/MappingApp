@@ -21,7 +21,7 @@ define([
     "dojo/_base/lang",
     "dojo/dom-construct",
     "dojo/on",
-    "app/CustomDialog"
+    "widgets/CustomDialog"
 ], function(config, Map, Extent, Point, IdentityManager, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, GeometryService, ProjectParameters, units, BorderContainer, ContentPane, Button, array, win, lang, domConstruct, on, CustomDialog) {
     var controller = {
         startup: function(config) {
@@ -146,7 +146,6 @@ define([
                 id: 'statusbarPaneRight',
                 region: 'right',
                 splitter: false,
-                content: 'status right'
             }).placeAt(this.statusbarContainer);
 
             this.initButtons();
@@ -306,10 +305,16 @@ define([
                                 this.map.setExtent(geoms[0]);
                                 this.homeButton.extent = geoms[0];
                             }), //callBack
-                            lang.hitch(this, function(err){console.log(err.error.message)})  //errBack
+                            lang.hitch(this, function(err){console.log(err.message)})  //errBack
                         );
                     }
                 }
+            }
+            //get the logged in user
+            if (esri.id.credentials.length === 0) {
+                this.statusbarPaneRight.set("content", "anonymous");
+            } else {
+                this.statusbarPaneRight.set("content", esri.id.credentials[0].userId);
             }
         },
 
@@ -326,7 +331,7 @@ define([
                     title: "Basemaps",
                     class: "nonModalDialog",
                     width: 400,
-                    height: 410,
+                    height: 420,
                     left: 65,
                     top: 130
                 });
@@ -336,10 +341,12 @@ define([
                 //create the basemap gallery
                 var widgetBMGallery = new BasemapGallery({
                     map: this.map,
-                    showArcGISBasemaps: true
+                    showArcGISBasemaps: true,
+                    style: "margin: 5px; padding: 5px;"
                 }, "bmGalleryDiv");
-                widgetBMGallery.placeAt(this.dlgBasemaps.containerNode);
                 widgetBMGallery.startup();
+                //put it in the dialog
+                widgetBMGallery.placeAt(this.dlgBasemaps.containerNode);
             }));
             //Draw
             require(["widgets/Draw"], lang.hitch(this, function(Draw) {
@@ -348,9 +355,10 @@ define([
                     title: "Draw",
                     class: "nonModalDialog",
                     width: 300,
-                    height: 150,
+                    height: 160,
                     left: 65,
-                    top: 130
+                    top: 130,
+                    style: "margin: 5px; padding: 5px;"
                 });
                 this.dlgDraw.startup();
                 //hook it to the button click
@@ -360,9 +368,9 @@ define([
                     map: this.map,
                     parentDialog: this.dlgDraw
                 }, "drawDiv");
+                widgetDraw.startup();
                 //put it in the dialog
                 widgetDraw.placeAt(this.dlgDraw.containerNode);
-                widgetDraw.startup();
             }));
             //Measure
             require(["widgets/Measure"], lang.hitch(this, function(Measure) {
@@ -373,7 +381,8 @@ define([
                     width: 300,
                     height: 300,
                     left: 65,
-                    top: 130
+                    top: 130,
+                    style: "margin: 5px; padding: 5px;"
                 });
                 this.dlgMeasure.startup();
                 //hook it to the button click
@@ -385,9 +394,9 @@ define([
                     defaultAreaUnit: units.ACRES,
                     defaultLengthUnit: units.FEET
                 }, "measureDiv");
+                widgetMeasure.startup();
                 //put it in the dialog
                 widgetMeasure.placeAt(this.dlgMeasure.containerNode);
-                widgetMeasure.startup();
             }));
             //Bookmarks
             require(["widgets/Bookmarks"], lang.hitch(this, function(Bookmarks) {
@@ -398,7 +407,8 @@ define([
                     width: 350,
                     height: 300,
                     left: 65,
-                    top: 130
+                    top: 130,
+                    style: "margin: 5px; padding: 5px;"
                 });
                 this.dlgBookmarks.startup();
                 //hook it to the button click
@@ -409,9 +419,9 @@ define([
                     parentDialog: this.dlgBookmarks,
                     config: this.config.bookmarkConfig
                 }, "bookmarksDiv");
+                widgetBookmarks.startup();
                 //put it in the dialog
                 widgetBookmarks.placeAt(this.dlgBookmarks.containerNode);
-                widgetBookmarks.startup();
             }));
             //Print
             require(["widgets/Print"], lang.hitch(this, function(Print) {
@@ -422,7 +432,8 @@ define([
                     width: 500,
                     height: 400,
                     left: 65,
-                    top: 130
+                    top: 130,
+                    style: "margin: 5px; padding: 5px;"
                 });
                 this.dlgPrint.startup();
                 //hook it to the button click
@@ -434,9 +445,9 @@ define([
                     printTaskURL: this.config.printConfig.printTaskUrl,
                     defaultTitle: this.config.printConfig.defaultTitle
                 }, "printDiv");
+                widgetPrint.startup();
                 //put it in the dialog
                 widgetPrint.placeAt(this.dlgPrint.containerNode);
-                widgetPrint.startup();
             }));
         }
     };
